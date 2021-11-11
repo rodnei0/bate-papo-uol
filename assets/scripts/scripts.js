@@ -1,30 +1,38 @@
-let nomeUsuario = undefined;
+let nomeUsuario;
 let tipo = "";
 let arrayDeMensagens = [];
 
 entrarNoBatePapo()
 
+function reset() {
+    alert("Você esta offline, por favor entre novamente");
+    window.location.reload();
+}
+
 function entrarNoBatePapo() {
         nomeUsuario = { name: prompt("Digite o seu nome de usuário:")};
         const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", nomeUsuario);
         
-        promise.then(quandoSucesso);
-        promise.catch(quandoErro);
+        promise.then(quandoSucessoEntrar);
+        promise.catch(quandoErroEntrar);
 }
 
-function quandoSucesso(sucesso) {
-    buscarDados()
-    setInterval(buscarDados, 3000);
-    setInterval(manterOnline, 4000);
+function quandoSucessoEntrar(sucesso) {
+    buscarDados();
+    setInterval(buscarDados, 2000);
+    setInterval(manterOnline, 2000);
 }
 
-function quandoErro(erro) {
+function quandoErroEntrar(erro) {
     alert("Este nome de usuário já está em uso, por favor escolha outro nome");
-    entrarNoBatePapo()
+    window.location.reload();
 }
 
 function manterOnline() {
-    const promise2 = axios.post("https://mock-api.driven.com.br/api/v4/uol/status", nomeUsuario);
+    const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/status", nomeUsuario);
+    console.log("Estou online rss");
+    
+    promise.catch(reset);
 }
 
 function buscarDados() {
@@ -50,7 +58,7 @@ function inserirMensagens(elemento) {
         <div class="mensagem ${tipo}">
             <span class="tempo">(${elemento[i].time})</span>
             <span class="nomes">${elemento[i].from} para ${elemento[i].to}:</span>
-            <span class="texto">${elemento[i].text}</span>
+            <span class="texto" data-identifier="message">${elemento[i].text}</span>
         </div>
         `);
         
@@ -60,4 +68,26 @@ function inserirMensagens(elemento) {
         const aparecerUltimaMensagem = document.querySelectorAll(".mensagem");
         aparecerUltimaMensagem[aparecerUltimaMensagem.length-1].scrollIntoView();
     }
+}
+
+function enviarMensagem() {
+    let mensagem = document.getElementById("inputMensagem").value;
+
+    const requisicao = {
+        from: nomeUsuario.name,
+        to: "Todos",
+        text: mensagem,
+        type: "message"    
+    }
+
+    console.log(requisicao);
+
+    const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", requisicao);
+
+    promise.then(quandoSucessoMensagem);
+    promise.catch(reset);
+}
+
+function quandoSucessoMensagem(sucesso) {
+    console.log(sucesso);
 }
