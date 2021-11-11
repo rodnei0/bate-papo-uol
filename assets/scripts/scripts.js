@@ -47,6 +47,7 @@ function processarResposta(elemento) {
 }
 
 function inserirMensagens(elemento) {
+    arrayDeMensagens = [];
     for (let i = 0; i < elemento.length; i++) {
         if (elemento[i].type === "status") {
             tipo = "status";
@@ -73,12 +74,12 @@ function inserirMensagens(elemento) {
 }
 
 function enviarMensagem() {
-    let mensagem = document.getElementById("inputMensagem").value;
+    let mensagem = document.querySelector(".inputMensagem");
 
     const requisicao = {
         from: nomeUsuario.name,
         to: "Todos",
-        text: mensagem,
+        text: mensagem.value,
         type: "message"    
     }
 
@@ -86,6 +87,8 @@ function enviarMensagem() {
 
     promise.then(quandoSucessoMensagem);
     promise.catch(reset);
+
+    mensagem.value = "";
 }
 
 function quandoSucessoMensagem(sucesso) {
