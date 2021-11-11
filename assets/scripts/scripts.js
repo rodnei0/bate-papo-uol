@@ -19,8 +19,8 @@ function entrarNoBatePapo() {
 
 function quandoSucessoEntrar(sucesso) {
     buscarDados();
-    setInterval(buscarDados, 2000);
-    setInterval(manterOnline, 2000);
+    setInterval(buscarDados, 3000);
+    setInterval(manterOnline, 5000);
 }
 
 function quandoErroEntrar(erro) {
@@ -38,6 +38,8 @@ function manterOnline() {
 function buscarDados() {
     const resposta = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
     resposta.then(processarResposta);
+
+    resposta.catch(reset);
 }
 
 function processarResposta(elemento) {
@@ -80,8 +82,6 @@ function enviarMensagem() {
         type: "message"    
     }
 
-    console.log(requisicao);
-
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", requisicao);
 
     promise.then(quandoSucessoMensagem);
@@ -89,5 +89,6 @@ function enviarMensagem() {
 }
 
 function quandoSucessoMensagem(sucesso) {
-    console.log(sucesso);
+    console.log("Mensagem enviada!");
+    buscarDados();
 }
