@@ -4,15 +4,16 @@ let arrayDeMensagens = [];
 let jaEntrei = false;
 
 function entrarNoBatePapo() {
-        jaEntrei = true;
-        nomeUsuario = { name: document.querySelector(".inputUsuario").value};
-        const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", nomeUsuario);
-        promise.then(quandoSucessoEntrar);
-        promise.catch(quandoErroEntrar);
+    jaEntrei = true;
+    nomeUsuario = { name: document.querySelector(".inputUsuario").value};
+    const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", nomeUsuario);
+    promise.then(quandoSucessoEntrar);
+    promise.catch(quandoErroEntrar);
 }
 
 function quandoSucessoEntrar(sucesso) {
-    hideUnhide();
+    hideUnhideEntrada();
+    setTimeout(hideUnhideMensagens, 3000);
     setInterval(buscarDados, 3000);
     setInterval(manterOnline, 5000);
 }
@@ -41,7 +42,6 @@ function processarResposta(elemento) {
 }
 
 function inserirMensagens(elemento) {
-    hideUnhide1();
     arrayDeMensagens = [];
     for (let i = 0; i < elemento.length; i++) {
         if (elemento[i].type === "status") {
@@ -59,13 +59,13 @@ function inserirMensagens(elemento) {
             <span class="texto" data-identifier="message">${elemento[i].text}</span>
         </div>
         `);
-        
-        const documento = document.querySelector(".container section");
-        documento.innerHTML = arrayDeMensagens.join(" ");
-        
-        const aparecerUltimaMensagem = document.querySelectorAll(".mensagem");
-        aparecerUltimaMensagem[aparecerUltimaMensagem.length-1].scrollIntoView();
     }
+        
+    const documento = document.querySelector(".container section");
+    documento.innerHTML = arrayDeMensagens.join(" ");
+        
+    const aparecerUltimaMensagem = document.querySelectorAll(".mensagem");
+    aparecerUltimaMensagem[aparecerUltimaMensagem.length-1].scrollIntoView();
 }
 
 function enviarMensagem() {
@@ -96,7 +96,7 @@ function reset() {
     window.location.reload();
 }
 
-function hideUnhide() {
+function hideUnhideEntrada() {
     const hide = document.querySelector(".inputUsuario");
     const hide1 = document.querySelector(".botaoEntrar");
     const hide2 = document.querySelector(".imagemEntrando");
@@ -106,14 +106,23 @@ function hideUnhide() {
     hide2.classList.remove("hide");
 }
 
-function hideUnhide1() {
+function hideUnhideMensagens() {
+    Unhide();
+    
     const hide = document.querySelector(".entrada");
     hide.classList.add("hide");
+}
 
+function Unhide() {
     const unhide = document.querySelectorAll(".hide");
     for (let i = 0; i < unhide.length; i++) {
         unhide[i].classList.remove("hide");
     }
+}
+
+function appear() {
+    const elemento = document.querySelector(".containerAsside")
+    elemento.classList.toggle("flex");
 }
 
 document.addEventListener("keypress", function(e) {
