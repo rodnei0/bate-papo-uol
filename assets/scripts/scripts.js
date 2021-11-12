@@ -1,24 +1,18 @@
 let nomeUsuario;
 let tipo = "";
 let arrayDeMensagens = [];
-
-entrarNoBatePapo()
-
-function reset() {
-    alert("Você esta offline, por favor entre novamente");
-    window.location.reload();
-}
+let jaEntrei = false;
 
 function entrarNoBatePapo() {
-        nomeUsuario = { name: prompt("Digite o seu nome de usuário:")};
+        jaEntrei = true;
+        nomeUsuario = { name: document.querySelector(".inputUsuario").value};
         const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", nomeUsuario);
-        
         promise.then(quandoSucessoEntrar);
         promise.catch(quandoErroEntrar);
 }
 
 function quandoSucessoEntrar(sucesso) {
-    buscarDados();
+    hideUnhide();
     setInterval(buscarDados, 3000);
     setInterval(manterOnline, 5000);
 }
@@ -47,6 +41,7 @@ function processarResposta(elemento) {
 }
 
 function inserirMensagens(elemento) {
+    hideUnhide1();
     arrayDeMensagens = [];
     for (let i = 0; i < elemento.length; i++) {
         if (elemento[i].type === "status") {
@@ -59,7 +54,7 @@ function inserirMensagens(elemento) {
         
         arrayDeMensagens.push(`
         <div class="mensagem ${tipo}">
-            <span class="tempo">(${elemento[i].time})</span>
+            <span class="tempo">(${elemento[i].time}) </span>
             <span class="nomes">${elemento[i].from} para ${elemento[i].to}:</span>
             <span class="texto" data-identifier="message">${elemento[i].text}</span>
         </div>
@@ -95,3 +90,40 @@ function quandoSucessoMensagem(sucesso) {
     console.log("Mensagem enviada!");
     buscarDados();
 }
+
+function reset() {
+    alert("Você esta offline, por favor entre novamente");
+    window.location.reload();
+}
+
+function hideUnhide() {
+    const hide = document.querySelector(".inputUsuario");
+    const hide1 = document.querySelector(".botaoEntrar");
+    const hide2 = document.querySelector(".imagemEntrando");
+
+    hide.classList.add("hide");
+    hide1.classList.add("hide");
+    hide2.classList.remove("hide");
+}
+
+function hideUnhide1() {
+    const hide = document.querySelector(".entrada");
+    hide.classList.add("hide");
+
+    const unhide = document.querySelectorAll(".hide");
+    for (let i = 0; i < unhide.length; i++) {
+        unhide[i].classList.remove("hide");
+    }
+}
+
+document.addEventListener("keypress", function(e) {
+    if(e.key === 'Enter') {
+        if(jaEntrei) {
+            var btn = document.querySelector("#submitMessage");
+            btn.click();
+        } else {
+            var btn = document.querySelector("#submitName");
+            btn.click();
+        }
+    }
+});
