@@ -4,41 +4,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <title>Bate-Papo UOL</title>
 </head>
 <body>
     <section class="entrada">
-        <img src="assets/imagens/batepapouol.png" alt="logo-bate-papo-uol">
-        <input type="text" class="inputUsuario" placeholder="Digite seu nome">
+        <img class="logo" src="assets/imagens/batepapouol.png" alt="logo-bate-papo-uol">
+        <input type="text" class="inputUsuario" placeholder="Digite seu nome" autofocus>
         <button class="botaoEntrar" onclick="entrarNoBatePapo()" id="submitName">Entrar</button>
-        <figure class="imagemEntrando hide">
-            <img src="assets/imagens/entrando.png" alt="entrando">
-        </figure>
+        <img class="imagemEntrando hide" src="assets/imagens/entrando.png" alt="entrando">
     </section>
     <header class="topo hide">
         <nav>
-            <figure>
-                <img src="assets/imagens/batepapouol.png" alt="logo-bate-papo-uol">
-            </figure>
+            <img src="assets/imagens/batepapouol.png" alt="logo-bate-papo-uol">
             <ion-icon name="people" onclick="appear()"></ion-icon>
         </nav>
     </header>
     <main class="container hide">
         <section></section>
+    </section>
     </main>
     <aside class="containerAsside">
-        <div onclick="appear()"></div>
+        <div class="sair" onclick="appear()"></div>
         <nav class="participantesAtivos">
-            <h2>Escolha um contato para enviar mensagem</h2>
-            <ion-icon name="people"></ion-icon>
-            <ion-icon name="people"></ion-icon>
-            <ion-icon name="people"></ion-icon>
-            <h2>Escolha um contato para enviar mensagem</h2>
-            <ion-icon name="people"></ion-icon>
-            <ion-icon name="people"></ion-icon>
-            <ion-icon name="people"></ion-icon>
+            <section class="containerInternoAsside">
+                <h2>Escolha um contato para enviar mensagem:</h2>
+                <div class="visibilidade" onclick="mudarUsuario(this)"><span><ion-icon name="people"></ion-icon>Todos</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+                <section>
+                    <div class="visibilidade" onclick="mudarUsuario(this)"><span><ion-icon name="person-circle"></ion-icon>Fulano</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+                </section>
+                <h2>Escolha a visibilidade:</h2>
+                <div class="visibilidade" onclick="mudarPrivacidade(this)"><span><ion-icon name="lock-open"></ion-icon>Público</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
+                <div class="visibilidade" onclick="mudarPrivacidade(this)"><span><ion-icon name="lock-open"></ion-icon>Reservadamente</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
+            </section>
         </nav>
     </aside>
     <footer class="rodape hide">

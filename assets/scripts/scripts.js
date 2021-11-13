@@ -1,5 +1,6 @@
 let nomeUsuario;
 let tipo = "";
+let privacidade = "message";
 let arrayDeMensagens = [];
 let jaEntrei = false;
 
@@ -49,13 +50,13 @@ function inserirMensagens(elemento) {
         } else if (elemento[i].type === "private_message") {
             tipo = "private";
         } else {
-            tipo = "";
+            tipo = "message";
         }
         
         arrayDeMensagens.push(`
         <div class="mensagem ${tipo}">
-            <span class="tempo">(${elemento[i].time}) </span>
-            <span class="nomes">${elemento[i].from} para ${elemento[i].to}:</span>
+            <span class="tempo">(${elemento[i].time})</span>
+            <span class="nomes"><strong>${elemento[i].from}</strong> para <strong>${elemento[i].to}</strong>:</span>
             <span class="texto" data-identifier="message">${elemento[i].text}</span>
         </div>
         `);
@@ -69,13 +70,15 @@ function inserirMensagens(elemento) {
 }
 
 function enviarMensagem() {
+    const foco = document.querySelector(".inputMensagem").focus();
+
     let mensagem = document.querySelector(".inputMensagem");
 
     const requisicao = {
         from: nomeUsuario.name,
         to: "Todos",
         text: mensagem.value,
-        type: "message"    
+        type: privacidade    
     }
 
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", requisicao);
@@ -121,8 +124,42 @@ function Unhide() {
 }
 
 function appear() {
+    const foco = document.querySelector(".inputMensagem").focus();
+
     const elemento = document.querySelector(".containerAsside")
     elemento.classList.toggle("flex");
+
+    const icone = document.querySelector(".checked");
+    icone.classList.toggle("flex");
+
+    const icone2 = document.querySelector(".privacidade");
+    icone2.classList.toggle("flex");
+}
+
+function mudarPrivacidade(elemento) {
+    const checked = document.querySelectorAll(".privacidade");
+
+    for (let i = 0; i < checked.length; i++) {
+        checked[i].classList.toggle("flex");
+    }
+
+    console.dir(elemento);
+    console.log(elemento.textContent);
+
+    if(elemento.textContent === "Público") {
+        privacidade = "message";
+    } else {
+        privacidade = "private_message";
+    }
+}
+
+function mudarUsuario(elemento) {
+    const checked = document.querySelectorAll(".usuario");
+
+    for (let i = 0; i < checked.length; i++) {
+        checked[i].classList.toggle("flex");
+    }
+
 }
 
 document.addEventListener("keypress", function(e) {

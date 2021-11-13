@@ -3,9 +3,12 @@
 }
 
 body {
-    padding: 80px 0;
-    height: 100%;
-    display: relative;
+    font-family: 'Roboto', sans-serif;
+    background: #FFFFFF;
+}
+
+strong {
+    font-weight: bold;
 }
 
 .entrada {
@@ -16,11 +19,11 @@ body {
     background: #FFFFFF;
 }
 
-.entrada img {
+.logo {
     width: 150px;
     height: 106px;
 
-    margin-bottom: 80px;
+    margin: 80px 0;
 }
 
 .inputUsuario {
@@ -75,7 +78,6 @@ body {
     width: 375px;
     height: 100%;
 
-
     display: flex;
     justify-content:space-between;
     align-items: center;
@@ -98,14 +100,6 @@ body {
     background: #FFFFFF;
 }
 
-.rodape div input {
-    height: 30px;
-    border: 0;
-    outline: 0;
-    font-style: italic;
-    background-color: #FFFFFF;
-}
-
 .topo nav ion-icon {
     font-size: 42px;
 }
@@ -123,15 +117,15 @@ body {
     position: absolute;
     top: 80px;
     bottom: 80px;
-   
-    overflow: auto; 
-
     background-color: #F3F3F3;
 }
 
 .container section {
-    width: 375px;
+    padding-bottom: 5px;
     height: 100%;
+    width: 375px;
+
+    overflow: hidden;
 }
 
 .mensagem {
@@ -141,11 +135,13 @@ body {
     width: 100%;
     height: 40px;
     margin: 4px 0;
+    padding: 5px;
     
     border-radius: 2px;
-    background-color: #FFFFFF;
+}
 
-    overflow: auto;
+.texto {
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -162,38 +158,114 @@ body {
     z-index: 1;
 }
 
-.containerAsside div {
-    width: 116px;
+.sair {
+    width: calc(50% - 50px);
     height: 100%;
+
+    position: absolute;
+    left: 0;
 }
 
 .participantesAtivos {
-    width: 259px;
+    width: calc(50% + 50px);
     height: 100%;
+
+    padding-left: 20px;
 
     background-color: #FFFFFF;
     
     display: flex;
     flex-direction: column;
+    position: absolute;
+    right: 0;
+}
+
+.containerInternoAsside {
+    width: 259px;
+}
+
+.containerInternoAsside span {
+    display: flex;
+    align-items: center;
+
+    margin: 4px 0;
+
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.containerInternoAsside ion-icon {
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.containerInternoAsside h2{
+margin: 20px 0;
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.visibilidade {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .status {
     background: #DCDCDC;
-
 }
+
 .private {
     background: #FFDEDE;
 }
 
+.message {
+    background: #FFFFFF;
+}
+
 .inputMensagem {
     width: 300px;
+    height: 60px;
+    border: 0;
+    outline: 0;
+    font-style: italic;
+    background-color: #FFFFFF;
 }
 
 .hide {
     display: none;
 }
 
+.checked {
+    display: none;
+    color: green;
+}
+
 .flex {
     display: flex;
 }
 
+/* .teste  {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 25px 0 5px 0;
+    height: 100%;
+    width: 375px;
+    background-color: red;
+    opacity: 0.5;
+    z-index: 99;
+    margin: auto;
+
+    overflow: hidden;
+} */
+
+/* .teste2 {
+    height: 100%;
+    width: 100%;
+    background-color: coral;
+} */
