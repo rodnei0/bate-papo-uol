@@ -1,7 +1,10 @@
 let nomeUsuario;
 let tipo = "";
 let privacidade = "message";
+let para = "Todos";
 let arrayDeMensagens = [];
+let arrayFiltrada = [];
+let arrayDeUsuarios = [];
 let jaEntrei = false;
 
 function entrarNoBatePapo() {
@@ -14,8 +17,11 @@ function entrarNoBatePapo() {
 
 function quandoSucessoEntrar(sucesso) {
     hideUnhideEntrada();
+    buscarUsuarios();
     setTimeout(hideUnhideMensagens, 3000);
-    setInterval(buscarDados, 3000);
+    setInterval(buscarMensagens, 3000);
+    setInterval(buscarUsuarios, 10000);
+    // buscarMensagens();
     setInterval(manterOnline, 5000);
 }
 
@@ -31,35 +37,62 @@ function manterOnline() {
     promise.catch(reset);
 }
 
-function buscarDados() {
-    const resposta = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
-    resposta.then(processarResposta);
+function buscarMensagens() {
+    const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
+    promisse.then(processarMensagem);
 
-    resposta.catch(reset);
+    promisse.catch(reset);
 }
 
-function processarResposta(elemento) {
+function processarMensagem(elemento) {
     inserirMensagens(elemento.data);
 }
 
+function buscarUsuarios() {
+    const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/participants");
+    promisse.then(processarUsuarios);
+
+    promisse.catch(reset);
+}
+
+function processarUsuarios(elemento) {
+    inserirUsuarios(elemento.data);
+}
+
+function inserirUsuarios(elemento) {
+    arrayDeUsuarios = [];
+
+    for(let i = 0; i < elemento.length; i++){
+        arrayDeUsuarios.push(`
+            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon>${elemento[i].name}</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+        `);
+    }
+
+    const documento = document.querySelector(".containerInternoAsside section");
+    documento.innerHTML = arrayDeUsuarios.join(" ");
+}
+
 function inserirMensagens(elemento) {
+    arrayFiltrada = [];
     arrayDeMensagens = [];
-    for (let i = 0; i < elemento.length; i++) {
-        if (elemento[i].type === "status") {
+    arrayFiltrada = elemento.filter(ePrivada);
+
+    for (let i = 0; i < arrayFiltrada.length; i++) {
+        if (arrayFiltrada[i].type === "status") {
             tipo = "status";
-        } else if (elemento[i].type === "private_message") {
+        } else if (arrayFiltrada[i].type === "private_message") {
             tipo = "private";
         } else {
             tipo = "message";
         }
         
         arrayDeMensagens.push(`
-        <div class="mensagem ${tipo}">
-            <span class="tempo">(${elemento[i].time})</span>
-            <span class="nomes"><strong>${elemento[i].from}</strong> para <strong>${elemento[i].to}</strong>:</span>
-            <span class="texto" data-identifier="message">${elemento[i].text}</span>
-        </div>
-        `);
+            <div class="mensagem ${tipo}" data-identifier="message">
+                <span class="tempo">(${arrayFiltrada[i].time})</span>
+                <span class="nomes"><span class="from"><strong>${arrayFiltrada[i].from}</strong></span> para <span class="to"><strong>${arrayFiltrada[i].to}</span></strong>:</span>
+                <span class="texto">${arrayFiltrada[i].text}</span>
+            </div>
+            `);
     }
         
     const documento = document.querySelector(".container section");
@@ -69,14 +102,28 @@ function inserirMensagens(elemento) {
     aparecerUltimaMensagem[aparecerUltimaMensagem.length-1].scrollIntoView();
 }
 
+function ePrivada(elemento){
+    if (elemento.type === "private_message" && elemento.from === nomeUsuario.name ){
+        return true;
+    } else if (elemento.type === "private_message" && elemento.to !== nomeUsuario.name) {
+        return false;
+    } else {
+        return true; 
+    }
+}
+
 function enviarMensagem() {
     const foco = document.querySelector(".inputMensagem").focus();
 
     let mensagem = document.querySelector(".inputMensagem");
 
+    if(mensagem.value === ""){
+        return;
+    }
+
     const requisicao = {
         from: nomeUsuario.name,
-        to: "Todos",
+        to: para,
         text: mensagem.value,
         type: privacidade    
     }
@@ -91,7 +138,7 @@ function enviarMensagem() {
 
 function quandoSucessoMensagem(sucesso) {
     console.log("Mensagem enviada!");
-    buscarDados();
+    buscarMensagens();
 }
 
 function reset() {
@@ -139,12 +186,7 @@ function appear() {
 function mudarPrivacidade(elemento) {
     const checked = document.querySelectorAll(".privacidade");
 
-    for (let i = 0; i < checked.length; i++) {
-        checked[i].classList.toggle("flex");
-    }
-
-    console.dir(elemento);
-    console.log(elemento.textContent);
+    mudarChecked(elemento, checked);
 
     if(elemento.textContent === "Público") {
         privacidade = "message";
@@ -155,11 +197,20 @@ function mudarPrivacidade(elemento) {
 
 function mudarUsuario(elemento) {
     const checked = document.querySelectorAll(".usuario");
+    mudarChecked(elemento, checked);
+    
+    para = elemento.outerText;
+}
 
+function mudarChecked(elemento, checked) {
     for (let i = 0; i < checked.length; i++) {
-        checked[i].classList.toggle("flex");
+        if (elemento.childNodes[1] === checked[i] && !checked[i].classList.contains("flex")) {
+            checked[i].classList.add("flex");
+        } else if (elemento.childNodes[1] === checked[i] && checked[i].classList.contains("flex")){
+        } else if (checked[i].classList.contains("flex")){
+            checked[i].classList.remove("flex");
+        }
     }
-
 }
 
 document.addEventListener("keypress", function(e) {

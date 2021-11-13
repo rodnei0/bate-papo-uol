@@ -14,8 +14,8 @@
 <body>
     <section class="entrada">
         <img class="logo" src="assets/imagens/batepapouol.png" alt="logo-bate-papo-uol">
-        <input type="text" class="inputUsuario" placeholder="Digite seu nome" autofocus>
-        <button class="botaoEntrar" onclick="entrarNoBatePapo()" id="submitName">Entrar</button>
+        <input type="text" class="inputUsuario" placeholder="Digite seu nome" data-identifier="enter-name" autofocus>
+        <button class="botaoEntrar" onclick="entrarNoBatePapo()" id="submitName" data-identifier="start">Entrar</button>
         <img class="imagemEntrando hide" src="assets/imagens/entrando.png" alt="entrando">
     </section>
     <header class="topo hide">
@@ -33,20 +33,18 @@
         <nav class="participantesAtivos">
             <section class="containerInternoAsside">
                 <h2>Escolha um contato para enviar mensagem:</h2>
-                <div class="visibilidade" onclick="mudarUsuario(this)"><span><ion-icon name="people"></ion-icon>Todos</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
-                <section>
-                    <div class="visibilidade" onclick="mudarUsuario(this)"><span><ion-icon name="person-circle"></ion-icon>Fulano</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
-                </section>
+                <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="people"></ion-icon>Todos</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+                <section></section>
                 <h2>Escolha a visibilidade:</h2>
-                <div class="visibilidade" onclick="mudarPrivacidade(this)"><span><ion-icon name="lock-open"></ion-icon>Público</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
-                <div class="visibilidade" onclick="mudarPrivacidade(this)"><span><ion-icon name="lock-open"></ion-icon>Reservadamente</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
+                <div class="visibilidade" onclick="mudarPrivacidade(this)" data-identifier="visibility"><span><ion-icon name="lock-open"></ion-icon>Público</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
+                <div class="visibilidade" onclick="mudarPrivacidade(this)" data-identifier="visibility"><span><ion-icon name="lock-open"></ion-icon>Reservadamente</span><ion-icon name="checkmark-outline" class="checked privacidade"></ion-icon></div>
             </section>
         </nav>
     </aside>
     <footer class="rodape hide">
         <div>
             <input type="text" id="inputMensagem" class="inputMensagem" placeholder="Escreva aqui...">
-            <ion-icon name="paper-plane-outline" onclick="enviarMensagem()" data-identifier="send-message" id="submitMessage"></ion-icon>
+            <ion-icon name="paper-plane-outline" onclick="enviarMensagem()" data-identifier="send-message" id="submitMessage" data-identifier="send-message"></ion-icon>
         </div>
     </footer>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
