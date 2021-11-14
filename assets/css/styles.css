@@ -125,47 +125,24 @@ strong {
     height: 100%;
     width: 375px;
 
-    overflow: hidden;
+    overflow: auto;
 }
 
 .mensagem {
-    display: flex;
+    display: inline-block;
+    word-wrap: break-word;
     align-items: center;
 
     width: 100%;
     height: fit-content;
     margin: 4px 0;
-    padding: 10px 0;
+    padding: 10px 4px;
     
     border-radius: 2px;
 }
 
-/* .texto {
-    height: 20px;
-    background-color: lime;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-
-} */
-
-
-.nomes {
-    display: flex;
-    justify-content: space-between;
-}
-
-.from {
+.tempo, .nomes {
     margin-right: 4px;
-}
-
-.to {
-    margin-left: 4px;
-}
-
-.tempo {
-    display: flex;
-    justify-content: center;
-    width: 80px;
 }
 
 .containerAsside {
@@ -193,8 +170,6 @@ strong {
     width: calc(50% + 50px);
     height: 100%;
 
-    padding-left: 20px;
-
     background-color: #FFFFFF;
     
     display: flex;
@@ -205,36 +180,49 @@ strong {
 
 .containerInternoAsside {
     width: 200px;
-}
-
-.containerInternoAsside span {
-    display: flex;
-    align-items: center;
-
-    margin: 4px 0;
-
-    font-size: 16px;
-    line-height: 19px;
-}
-
-.containerInternoAsside ion-icon {
-    font-size: 22px;
-    margin-right: 10px;
+    padding-left: 20px;
 }
 
 .containerInternoAsside h2{
-margin: 20px 0;
-
     text-align: center;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
+    
+    margin: 20px 0;
 }
+
 
 .visibilidade, .participante {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 5px 0;
+    
+}
+
+.visibilidade ion-icon, .participante ion-icon {
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+.visibilidade span, .participante span {
+    display: flex;
+    align-items: center;
+
+    font-size: 16px;
+    line-height: 19px;
+
+}
+
+.visibilidade span p{
+    margin-top: 5px;
+}
+
+.participante span p{
+    width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status {
@@ -270,25 +258,3 @@ margin: 20px 0;
 .flex {
     display: flex;
 }
-
-/* .teste  {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    padding: 25px 0 5px 0;
-    height: 100%;
-    width: 375px;
-    background-color: red;
-    opacity: 0.5;
-    z-index: 99;
-    margin: auto;
-
-    overflow: hidden;
-} */
-
-/* .teste2 {
-    height: 100%;
-    width: 100%;
-    background-color: coral;
-} */

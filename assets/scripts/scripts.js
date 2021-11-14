@@ -64,7 +64,7 @@ function inserirUsuarios(elemento) {
 
     for(let i = 0; i < elemento.length; i++){
         arrayDeUsuarios.push(`
-            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon>${elemento[i].name}</span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon><p>${elemento[i].name}</p></span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
         `);
     }
 
@@ -85,14 +85,14 @@ function inserirMensagens(elemento) {
         } else {
             tipo = "message";
         }
-        
+
         arrayDeMensagens.push(`
-            <div class="mensagem ${tipo}" data-identifier="message">
-                <span class="tempo">(${arrayFiltrada[i].time})</span>
-                <span class="nomes"><span class="from"><strong>${arrayFiltrada[i].from}</strong></span> para <span class="to"><strong>${arrayFiltrada[i].to}</span></strong>:</span>
-                <span class="texto">${arrayFiltrada[i].text}</span>
-            </div>
-            `);
+        <div class="mensagem ${tipo}" data-identifier="message">
+            <span class="tempo">(${arrayFiltrada[i].time})</span>
+            <span class="nomes"><strong>${arrayFiltrada[i].from}</strong> para <strong>${arrayFiltrada[i].to}</strong>:</span>
+            ${arrayFiltrada[i].text}
+        </div>`);
+
     }
         
     const documento = document.querySelector(".container section");
@@ -103,7 +103,7 @@ function inserirMensagens(elemento) {
 }
 
 function ePrivada(elemento){
-    if (elemento.type === "private_message" && elemento.from === nomeUsuario.name ){
+    if (elemento.type === "private_message" && elemento.from === nomeUsuario.name || elemento.type === "private_message" && elemento.to === "Todos"){
         return true;
     } else if (elemento.type === "private_message" && elemento.to !== nomeUsuario.name) {
         return false;
@@ -176,7 +176,7 @@ function appear() {
     const elemento = document.querySelector(".containerAsside")
     elemento.classList.toggle("flex");
 
-    const icone = document.querySelector(".checked");
+    const icone = document.querySelector(".usuario");
     icone.classList.toggle("flex");
 
     const icone2 = document.querySelector(".privacidade");
