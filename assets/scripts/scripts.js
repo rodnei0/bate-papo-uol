@@ -1,10 +1,6 @@
 let nomeUsuario;
-let tipo = "";
 let privacidade = "message";
 let para = "Todos";
-let arrayDeMensagens = [];
-let arrayFiltrada = [];
-let arrayDeUsuarios = [];
 let jaEntrei = false;
 
 function entrarNoBatePapo() {
@@ -21,7 +17,6 @@ function quandoSucessoEntrar(sucesso) {
     setTimeout(hideUnhideMensagens, 3000);
     setInterval(buscarMensagens, 3000);
     setInterval(buscarUsuarios, 10000);
-    // buscarMensagens();
     setInterval(manterOnline, 5000);
 }
 
@@ -30,52 +25,77 @@ function quandoErroEntrar(erro) {
     window.location.reload();
 }
 
-function manterOnline() {
-    const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/status", nomeUsuario);
-    console.log("Estou online rss");
-    
-    promise.catch(reset);
-}
+function hideUnhideEntrada() {
+    const hide = document.querySelector(".inputUsuario");
+    const hide1 = document.querySelector(".botaoEntrar");
+    const hide2 = document.querySelector(".imagemEntrando");
 
-function buscarMensagens() {
-    const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
-    promisse.then(processarMensagem);
-
-    promisse.catch(reset);
-}
-
-function processarMensagem(elemento) {
-    inserirMensagens(elemento.data);
+    hide.classList.add("hide");
+    hide1.classList.add("hide");
+    hide2.classList.remove("hide");
 }
 
 function buscarUsuarios() {
     const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/participants");
-    promisse.then(processarUsuarios);
-
+    
+    promisse.then(inserirUsuarios);
     promisse.catch(reset);
 }
 
-function processarUsuarios(elemento) {
-    inserirUsuarios(elemento.data);
+function hideUnhideMensagens() {
+    Unhide();
+    
+    const hide = document.querySelector(".entrada");
+    hide.classList.add("hide");
+}
+
+function buscarMensagens() {
+    const promisse = axios.get("https://mock-api.driven.com.br/api/v4/uol/messages");
+
+    promisse.then(inserirMensagens);
+    promisse.catch(reset);
+}
+
+function manterOnline() {
+    const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/status", nomeUsuario);
+    
+    promise.catch(reset);
 }
 
 function inserirUsuarios(elemento) {
-    arrayDeUsuarios = [];
+    const usuario = elemento.data;
+    let arrayDeUsuarios = [];
+    let offline = true;
 
-    for(let i = 0; i < elemento.length; i++){
-        arrayDeUsuarios.push(`
-            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon><p>${elemento[i].name}</p></span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
-        `);
+    for(let i = 0; i < usuario.length; i++){
+        if (usuario[i].name === para) {
+            offline = false;
+            arrayDeUsuarios.push(`
+            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon><p>${usuario[i].name}</p></span><ion-icon name="checkmark-outline" class="checked usuario flex"></div></div>
+            `);
+        } else {
+            arrayDeUsuarios.push(`
+            <div class="participante" onclick="mudarUsuario(this)" data-identifier="participant"><span><ion-icon name="person-circle"></ion-icon><p>${usuario[i].name}</p></span><ion-icon name="checkmark-outline" class="checked usuario"></div></div>
+            `);
+        }
     }
 
     const documento = document.querySelector(".containerInternoAsside section");
     documento.innerHTML = arrayDeUsuarios.join(" ");
+
+    const icone = document.querySelector(".usuario");
+    if (offline && !icone.classList.contains("flex")) {
+        icone.classList.add("flex");
+    }
 }
 
 function inserirMensagens(elemento) {
-    arrayFiltrada = [];
-    arrayDeMensagens = [];
-    arrayFiltrada = elemento.filter(ePrivada);
+    const mensagem = elemento.data;
+    let arrayFiltrada = [];
+    let arrayDeMensagens = [];
+    let tipo = "";
+
+    arrayFiltrada = mensagem.filter(ePrivada);
 
     for (let i = 0; i < arrayFiltrada.length; i++) {
         if (arrayFiltrada[i].type === "status") {
@@ -113,8 +133,6 @@ function ePrivada(elemento){
 }
 
 function enviarMensagem() {
-    const foco = document.querySelector(".inputMensagem").focus();
-
     let mensagem = document.querySelector(".inputMensagem");
 
     if(mensagem.value === ""){
@@ -130,37 +148,15 @@ function enviarMensagem() {
 
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/messages", requisicao);
 
-    promise.then(quandoSucessoMensagem);
+    promise.then(buscarMensagens);
     promise.catch(reset);
 
     mensagem.value = "";
 }
 
-function quandoSucessoMensagem(sucesso) {
-    console.log("Mensagem enviada!");
-    buscarMensagens();
-}
-
 function reset() {
     alert("Você esta offline, por favor entre novamente");
     window.location.reload();
-}
-
-function hideUnhideEntrada() {
-    const hide = document.querySelector(".inputUsuario");
-    const hide1 = document.querySelector(".botaoEntrar");
-    const hide2 = document.querySelector(".imagemEntrando");
-
-    hide.classList.add("hide");
-    hide1.classList.add("hide");
-    hide2.classList.remove("hide");
-}
-
-function hideUnhideMensagens() {
-    Unhide();
-    
-    const hide = document.querySelector(".entrada");
-    hide.classList.add("hide");
 }
 
 function Unhide() {
@@ -171,13 +167,11 @@ function Unhide() {
 }
 
 function appear() {
-    const foco = document.querySelector(".inputMensagem").focus();
-
     const elemento = document.querySelector(".containerAsside")
     elemento.classList.toggle("flex");
 
-    const icone = document.querySelector(".usuario");
-    icone.classList.toggle("flex");
+    // const icone = document.querySelector(".usuario");
+    // icone.classList.toggle("flex");
 
     const icone2 = document.querySelector(".privacidade");
     icone2.classList.toggle("flex");
@@ -196,19 +190,19 @@ function mudarPrivacidade(elemento) {
 }
 
 function mudarUsuario(elemento) {
-    const checked = document.querySelectorAll(".usuario");
-    mudarChecked(elemento, checked);
+    const usuario = document.querySelectorAll(".usuario");
+    mudarChecked(elemento, usuario);
     
     para = elemento.outerText;
 }
 
-function mudarChecked(elemento, checked) {
-    for (let i = 0; i < checked.length; i++) {
-        if (elemento.childNodes[1] === checked[i] && !checked[i].classList.contains("flex")) {
-            checked[i].classList.add("flex");
-        } else if (elemento.childNodes[1] === checked[i] && checked[i].classList.contains("flex")){
-        } else if (checked[i].classList.contains("flex")){
-            checked[i].classList.remove("flex");
+function mudarChecked(elemento, usuario) {
+    for (let i = 0; i < usuario.length; i++) {
+        if (elemento.childNodes[1] === usuario[i] && !usuario[i].classList.contains("flex")) {
+            usuario[i].classList.add("flex");
+        } else if (elemento.childNodes[1] === usuario[i] && usuario[i].classList.contains("flex")){
+        } else if (usuario[i].classList.contains("flex")){
+            usuario[i].classList.remove("flex");
         }
     }
 }
