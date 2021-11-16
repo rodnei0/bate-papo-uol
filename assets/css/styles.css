@@ -132,8 +132,13 @@ strong {
     display: inline-block;
     word-wrap: break-word;
     align-items: center;
-
+    
+    font-size: 14px;
+    line-height: 16px;
+    
     width: 100%;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
     margin: 4px 0;
     padding: 10px 4px;
@@ -146,8 +151,12 @@ strong {
 }
 
 .containerAsside {
-    display: none;
+    display: flex;
     justify-content: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.4s, opacity 0.4s linear;
 
     position: absolute;
     top: 0;
@@ -156,6 +165,12 @@ strong {
     width: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 1;
+}
+
+.transicao {
+    visibility: visible;
+    opacity: 1;
+    transition-delay:0s;
 }
 
 .sair {
@@ -181,6 +196,8 @@ strong {
 .containerInternoAsside {
     width: 200px;
     padding-left: 20px;
+
+    overflow: auto;
 }
 
 .containerInternoAsside h2{
@@ -192,13 +209,11 @@ strong {
     margin: 20px 0;
 }
 
-
 .visibilidade, .participante {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 5px 0;
-    
 }
 
 .visibilidade ion-icon, .participante ion-icon {
@@ -212,7 +227,6 @@ strong {
 
     font-size: 16px;
     line-height: 19px;
-
 }
 
 .visibilidade span p{

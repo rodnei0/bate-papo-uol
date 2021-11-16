@@ -168,10 +168,7 @@ function Unhide() {
 
 function appear() {
     const elemento = document.querySelector(".containerAsside")
-    elemento.classList.toggle("flex");
-
-    // const icone = document.querySelector(".usuario");
-    // icone.classList.toggle("flex");
+    elemento.classList.toggle("transicao");
 
     const icone2 = document.querySelector(".privacidade");
     icone2.classList.toggle("flex");
